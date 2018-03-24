@@ -1,0 +1,6 @@
+version: '3'
+services:
+  miner:
+    build: .
+    environment:
+    - ENABLE_SSH=TRUE
