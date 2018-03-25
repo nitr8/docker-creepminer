@@ -3,4 +3,4 @@ services:
   miner:
     build: .
     environment:
-    - ENABLE_SSH=TRUE
+    - AUTO_START=TRUE

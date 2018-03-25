@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "init system"
+echo "-> System Initialization"
 if [[ -v ENABLE_SSH ]]; then
     echo "=> ENABLE_SSH set to ${ENABLE_SSH}"
     if [ ! -d /var/run/sshd ] ; then
@@ -8,12 +8,11 @@ if [[ -v ENABLE_SSH ]]; then
         mkdir /var/run/sshd
         sed 's/PermitRootLogin without-password/PermitRootLogin yes/' -i /etc/ssh/sshd_config
         sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-        #sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-        #sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
     fi
     if [ ! -f ~/supervisord.ssh ] ; then
         echo "=> Adding SSH to Supervisord"
         touch ~/supervisord.ssh
+        echo " " >> /etc/supervisor/supervisord.conf
         echo "[program:sshd]" >> /etc/supervisor/supervisord.conf
         echo "command=/usr/sbin/sshd -D -E /var/log/sshd.log" >>/etc/supervisor/supervisord.conf
         echo "autostart=true" >>/etc/supervisor/supervisord.conf
@@ -29,6 +28,23 @@ if [[ -v ENABLE_SSH ]]; then
     fi
 fi
 
+if [ -v AUTO_START ] ; then
+    echo "=> Adding creepMiner to Supervisord"
+    touch ~/supervisord.creepminer
+    echo " " >> /etc/supervisor/supervisord.conf
+    echo "[program:creepMiner]" >> /etc/supervisor/supervisord.conf
+    if [ -f /config/mining.conf ] ; then
+        echo "command=/usr/local/sbin/creepMiner --c=/config/mining.conf" >>/etc/supervisor/supervisord.conf
+    else
+        echo "command=/usr/local/sbin/creepMiner --c=/usr/local/sbin/mining.conf" >>/etc/supervisor/supervisord.conf
+    fi
+    echo "autostart=true" >>/etc/supervisor/supervisord.conf
+    echo "autorestart=true" >>/etc/supervisor/supervisord.conf
+    echo "directory=/usr/local/sbin" >>/etc/supervisor/supervisord.conf
+    echo "stdout_logfile=/dev/stdout" >>/etc/supervisor/supervisord.conf
+    echo "stdout_logfile_maxbytes=0" >>/etc/supervisor/supervisord.conf
+fi
+
 echo "=> Starting Supervisor - the Process Control System"
-echo " "
+
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
