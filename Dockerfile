@@ -8,6 +8,7 @@ ENV TERM xterm
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 ENV RELEASE development
+ENV AUTO_START TRUE
 
 # Update system and install Supervisord, OpenSSH server, and tools needed for creepMiner
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
