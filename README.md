@@ -18,4 +18,5 @@ By default the miner loads `/usr/local/sbin/miner.config` just for testing purpo
 Connecting to the creepMiner server
 -------------------------------------------------------------
 http://IP:8124 <-- creepminer UI
+
 http://IP:9001 <-- supervisord UI
