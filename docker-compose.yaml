@@ -1,6 +1,15 @@
 version: '3'
+
 services:
   miner:
     build: .
     environment:
-    - AUTO_START=TRUE
+      - AUTO_START=TRUE
+    volumes:
+      - conf:/config
+    ports:
+      - 8124:8124
+      - 9001:9001
+
+volumes:
+  conf:
