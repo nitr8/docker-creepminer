@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends -o Dpkg::Option
 
 RUN cd /tmp/ \
   && pip install --upgrade pip \
-  && pip install conan \
+  && pip2.7 install conan \
   && git clone -b development https://github.com/Creepsky/creepMiner \
   && cd creepMiner \
   && conan install . -s compiler.libcxx=libstdc++11 --build=missing \
