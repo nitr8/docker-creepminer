@@ -42,6 +42,9 @@ RUN chmod 755 /sbin/init
 # Set root password to toor
 RUN echo 'root:toor' | chpasswd
 
+# Expose port 8124 for creepMiner UI and 9001 for supervisord
+EXPOSE 8124 9001
+
 # Use baseimage-docker's init system.
 CMD ["/sbin/init"]
 
