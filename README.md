@@ -35,9 +35,11 @@ supervisord | [http://docker_ip:9001](http://127.0.0.1:9001)
 
 ## Other information
 
-* [creepMiner github](https://github.com/Creepsky/creepMiner)
-* [creepMiner pool](https://pool.creepminer.net)
-* [creepMiner wallet](https://wallet.creepminer.net)
-* [creepMiner demo miner](https://demo.creepminer.net)
+Description | URL
+------------ | -------------
+creepMiner github | [https://github.com/Creepsky/creepMiner](https://github.com/Creepsky/creepMiner)
+creepMiner pool | [https://pool.creepminer.net](https://pool.creepminer.net)
+creepMiner wallet | [https://wallet.creepminer.net](https://wallet.creepminer.net)
+demo miner | [https://demo.creepminer.net](https://demo.creepminer.net)
 
 Please see docker's [Use volumes](https://docs.docker.com/storage/volumes/) for more details.
