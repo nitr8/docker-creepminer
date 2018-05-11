@@ -1,50 +1,71 @@
 #!/bin/bash
 
-echo "-> System Initialization"
+IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+
+echo -e "\E[1;32m-> System Initialization ($IP)"
+
 if [[ -v ENABLE_SSH ]]; then
-    echo "=> ENABLE_SSH set to ${ENABLE_SSH}"
-    if [ ! -d /var/run/sshd ] ; then
-        echo "=> Configuring SSH"
-        mkdir /var/run/sshd
-        sed 's/PermitRootLogin without-password/PermitRootLogin yes/' -i /etc/ssh/sshd_config
-        sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+	echo " "
+	if [ ${ENABLE_SSH} = TRUE ]; then
+    echo "=> Setting up SSHd"
+		if [ ! -d /var/run/sshd ] ; then
+			echo "=> Configuring SSH"
+			mkdir /var/run/sshd
+			sed 's/PermitRootLogin without-password/PermitRootLogin yes/' -i /etc/ssh/sshd_config
+			sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
     fi
     if [ ! -f ~/supervisord.ssh ] ; then
-        echo "=> Adding SSH to Supervisord"
-        touch ~/supervisord.ssh
-        echo " " >> /etc/supervisor/supervisord.conf
-        echo "[program:sshd]" >> /etc/supervisor/supervisord.conf
-        echo "command=/usr/sbin/sshd -D -E /var/log/sshd.log" >>/etc/supervisor/supervisord.conf
-        echo "autostart=true" >>/etc/supervisor/supervisord.conf
-        echo "autorestart=true" >>/etc/supervisor/supervisord.conf
-        echo "redirect_stderr=true" >>/etc/supervisor/supervisord.conf
-        echo "stdout_logfile=/var/log/%(program_name)s.log" >>/etc/supervisor/supervisord.conf
-        echo "stdout_logfile_maxbytes=5MB" >>/etc/supervisor/supervisord.conf
-        echo "stdout_logfile_backups=0" >>/etc/supervisor/supervisord.conf
-        echo "stderr_logfile=/var/log/%(program_name)s.log" >>/etc/supervisor/supervisord.conf
-        echo "stderr_logfile_maxbytes=5MB" >>/etc/supervisor/supervisord.conf
-        echo "stderr_logfile_backups=0" >>/etc/supervisor/supervisord.conf
-        echo " " >>/etc/supervisor/supervisord.conf
+	    echo "=> Adding SSH to Supervisord"
+	    touch ~/supervisord.ssh
+	    echo " " >> /etc/supervisor/supervisord.conf
+	    echo "[program:sshd]" >> /etc/supervisor/supervisord.conf
+	    echo "command=/usr/sbin/sshd -D -E /var/log/sshd.log" >>/etc/supervisor/supervisord.conf
+	    echo "autostart=true" >>/etc/supervisor/supervisord.conf
+	    echo "autorestart=true" >>/etc/supervisor/supervisord.conf
+	    echo "redirect_stderr=false" >>/etc/supervisor/supervisord.conf
+	    echo "stdout_logfile=/var/log/%(program_name)s.log" >>/etc/supervisor/supervisord.conf
+	    echo "stdout_logfile_maxbytes=5MB" >>/etc/supervisor/supervisord.conf
+	    echo "stdout_logfile_backups=0" >>/etc/supervisor/supervisord.conf
+	    echo "stderr_logfile=/var/log/%(program_name)s.log" >>/etc/supervisor/supervisord.conf
+	    echo "stderr_logfile_maxbytes=5MB" >>/etc/supervisor/supervisord.conf
+	    echo "stderr_logfile_backups=0" >>/etc/supervisor/supervisord.conf
+	    echo " " >>/etc/supervisor/supervisord.conf
     fi
+	else
+		echo " "
+		echo -e "\E[1;31m      Warning : ENABLE_SSH is set but not to TRUE"
+		echo -e "\E[1;31m                Please set \E[1;36mENABLE_SSH=TRUE"
+		echo " "
+	fi
 fi
 
-if [ -v AUTO_START ] ; then
+if [[ -v AUTO_START ]]; then
+	if [ ${AUTO_START} = TRUE ]; then
     echo "=> Adding creepMiner to Supervisord"
     touch ~/supervisord.creepminer
     echo " " >> /etc/supervisor/supervisord.conf
     echo "[program:creepMiner]" >> /etc/supervisor/supervisord.conf
     if [ -f /config/mining.conf ] ; then
-        echo "command=/usr/local/sbin/creepMiner --c=/config/mining.conf" >>/etc/supervisor/supervisord.conf
+			echo "=> Using creepMiner custom config"
+			echo "command=/usr/local/sbin/creepMiner --c=/config/mining.conf" >>/etc/supervisor/supervisord.conf
     else
-        echo "command=/usr/local/sbin/creepMiner --c=/usr/local/sbin/mining.conf" >>/etc/supervisor/supervisord.conf
+    	echo "=> Using creepMiner default config"
+      echo "command=/usr/local/sbin/creepMiner --c=/usr/local/sbin/mining.conf" >>/etc/supervisor/supervisord.conf
     fi
     echo "autostart=true" >>/etc/supervisor/supervisord.conf
     echo "autorestart=true" >>/etc/supervisor/supervisord.conf
     echo "directory=/usr/local/sbin" >>/etc/supervisor/supervisord.conf
     echo "stdout_logfile=/dev/stdout" >>/etc/supervisor/supervisord.conf
     echo "stdout_logfile_maxbytes=0" >>/etc/supervisor/supervisord.conf
+	else
+		echo " "
+		echo -e "\E[1;31m      Warning : AUTO_START is set but not to TRUE"
+		echo -e "\E[1;31m                Please set \E[1;36mAUTO_START=TRUE"
+		echo " "
+  fi
 fi
 
-echo "=> Starting Supervisor - the Process Control System"
+echo -e "\E[1;32m=> Starting Supervisor - the Process Control System"
+echo " "
 
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

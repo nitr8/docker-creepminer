@@ -1,26 +1,19 @@
 FROM ubuntu:16.04
 MAINTAINER Wayne Humphrey <wayne@humphrey.za.net>
-LABEL version="1.2"
+LABEL version="1.3"
 
 # Set some env variables as we mostly work in non interactive mode
 RUN echo "export VISIBLE=now" >> /etc/profile
-ENV AUTO_START TRUE
-ENV ENABLE_SSH FALSE
 
 # Update system and install Supervisord, OpenSSH server, and tools needed for creepMiner
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 RUN apt-get update && apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confold" \
-  apt-utils supervisor \
-  openssh-server \
-  build-essential \
-  python-pip \
-  python-setuptools \
-  python-dev \
-  libssl-dev \
-  openssl \
-  cmake \
-  git \
-  sudo
+  apt-utils supervisor sudo \
+  net-tools openssh-server \
+  build-essential cmake git \
+  python-pip python-setuptools python-dev \
+  openssl libssl-dev
+
 
 RUN cd /tmp/ \
   && pip install --upgrade pip \
