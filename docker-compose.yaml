@@ -2,14 +2,16 @@ version: '3'
 
 services:
   miner:
+    container_name: miner
     build: .
-    environment:
-      - AUTO_START=TRUE
-    volumes:
-      - conf:/config
     ports:
       - 8124:8124
       - 9001:9001
-
-volumes:
-  conf:
+      - 9003:9003
+    volumes:
+      - /Volumes/wahu/hts/creepminer:/config
+      - /Volumes/wahu/plots:/plots
+      - /Volumes/wahu/logs:/logs      
+    environment:
+      - AUTO_START=TRUE
+#    restart: always
