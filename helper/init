@@ -75,7 +75,7 @@ if [[ -v AUTO_START ]]; then
   fi
 
   echo -e "\E[1;32m=> Starting frontail – streaming logs to the browser"
-  /usr/local/bin/frontail -d -h 0.0.0.0 -p 9003 --ui-highlight --ui-highlight-preset /etc/frontail.json -t dark --ui-hide-topbar --ui-no-indent -l 2000 -n 60 /logs/creepMiner.log
+  /usr/local/bin/frontail -d -h 0.0.0.0 -p 9002 --ui-highlight --ui-highlight-preset /etc/frontail.json -t dark --ui-hide-topbar --ui-no-indent -l 2000 -n 60 /logs/creepMiner.log
   echo " "
 
   if [[ -v SUPERVISOR ]]; then

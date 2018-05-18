@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends -o Dpkg::Option
   build-essential cmake git \
   python-pip python-setuptools python-dev \
   openssl libssl-dev \
-  curl
+  xz-utils curl ca-certificates gnupg2 dirmngr
 
 RUN cd /tmp/ \
   && pip install --upgrade pip \
@@ -37,8 +37,6 @@ ENV NODE_VERSION 8.11.2
 
 # Build node.js used for frontail
 RUN buildDeps='xz-utils curl ca-certificates gnupg2 dirmngr' \
-    && set -x \
-    && apt-get install -y $buildDeps --no-install-recommends \
     && set -ex \
       && for key in \
       94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
@@ -74,8 +72,8 @@ RUN chmod 755 /sbin/init
 # Set root password to toor
 RUN echo 'root:toor' | chpasswd
 
-# Expose port 8124 for creepMiner UI and 9001 for supervisord
-EXPOSE 8124 9001
+# Expose port 8124 for creepMiner UI, 9001 for supervisord or webproc and 9002 for frontail
+EXPOSE 8124 9001 9002
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/init"]
