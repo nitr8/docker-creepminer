@@ -3,9 +3,9 @@
 IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 
 echo -e "\E[1;32m-> System Initialization ($IP)"
+echo " "
 
 if [[ -v ENABLE_SSH ]]; then
-	echo " "
 	if [ ${ENABLE_SSH} = TRUE ]; then
     echo "=> Setting up SSHd"
 		if [ ! -d /var/run/sshd ] ; then
@@ -22,8 +22,8 @@ if [[ -v ENABLE_SSH ]]; then
 	    echo "command=/usr/sbin/sshd -D -E /var/log/sshd.log" >>/etc/supervisor/supervisord.conf
 	    echo "autostart=true" >>/etc/supervisor/supervisord.conf
 	    echo "autorestart=true" >>/etc/supervisor/supervisord.conf
-	    echo "redirect_stderr=false" >>/etc/supervisor/supervisord.conf
-	    echo "stdout_logfile=/var/log/%(program_name)s.log" >>/etc/supervisor/supervisord.conf
+	    echo "redirect_stderr=true" >>/etc/supervisor/supervisord.conf
+	    echo "stdout_logfile=/var/log/%(program_name)s_%(process_num)s.log" >>/etc/supervisor/supervisord.conf
 	    echo "stdout_logfile_maxbytes=5MB" >>/etc/supervisor/supervisord.conf
 	    echo "stdout_logfile_backups=0" >>/etc/supervisor/supervisord.conf
 	    echo "stderr_logfile=/var/log/%(program_name)s.log" >>/etc/supervisor/supervisord.conf
@@ -41,7 +41,7 @@ fi
 
 if [[ -v AUTO_START ]]; then
 	if [ ${AUTO_START} = TRUE ]; then
-    echo "=> Adding creepMiner to Supervisord"
+    echo "\E[1;32m=> Adding creepMiner to Supervisord"
     touch ~/supervisord.creepminer
     echo " " >> /etc/supervisor/supervisord.conf
     echo "[program:creepMiner]" >> /etc/supervisor/supervisord.conf
@@ -73,21 +73,36 @@ if [[ -v AUTO_START ]]; then
 		echo -e "\E[1;31m                Please set \E[1;36mAUTO_START=TRUE"
 		echo " "
   fi
-
-  echo -e "\E[1;32m=> Starting frontail – streaming logs to the browser"
-  /usr/local/bin/frontail -d -h 0.0.0.0 -p 9002 --ui-highlight --ui-highlight-preset /etc/frontail.json -t dark --ui-hide-topbar --ui-no-indent -l 2000 -n 60 /logs/creepMiner.log
-  echo " "
-
-  if [[ -v SUPERVISOR ]]; then
-	echo -e "\E[1;32m=> Starting Supervisor - the Process Control System"
-	echo " "
-
-	/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
-  else
-	echo -e "\E[1;32m=> Starting Supervisor - the Process Control System"
-	echo " "
-	
-	/usr/bin/webproc /etc/webproc.toml
-  fi
 fi
 
+if [[ -v FRONTAIL ]]; then
+	echo -e "\E[1;32m=> Starting frontail – streaming logs to the browser"
+	if [ -f /config/frontail.json ] ; then
+		/usr/bin/frontail -d -h 0.0.0.0 -p 9002 --ui-highlight --ui-highlight-preset /config/frontail.conf -t dark --ui-hide-topbar --ui-no-indent -l 2000 -n 60 /logs/creepMiner.log
+	else
+		/usr/bin/frontail -d -h 0.0.0.0 -p 9002 --ui-highlight --ui-highlight-preset /etc/frontail.json -t dark --ui-hide-topbar --ui-no-indent -l 2000 -n 60 /logs/creepMiner.log
+	fi
+fi
+
+if [[ -v C_SCRIPT ]]; then
+	echo -e "\E[1;32m=> Custom script varable found"
+	if [ -n "${C_SCRIPT}" ]; then
+		echo "=> Exicuting {C_SCRIPT}"
+		chmod 755 /config/${C_SCRIPT} && /config/${C_SCRIPT}
+	else
+		echo " "
+		echo -e "\E[1;31m      Warning : C_SCRIPT is set but not to script name specified"
+		echo -e "\E[1;31m                E.G. /config/script.sh and set \E[1;36mC_SCRIPT=script.sh"
+		echo " "
+  	fi
+fi
+
+if [[ -v WEBPROC ]]; then
+	echo -e "\E[1;32m=> Starting webproc - TBD"
+	echo " "
+	/usr/bin/webproc /etc/webproc.toml
+else
+	echo -e "\E[1;32m=> Starting Supervisor - the Process Control System"
+	echo " "
+	/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+fi

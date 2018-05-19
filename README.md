@@ -4,6 +4,10 @@ Out-of-the-box creepMiner github build running in Ubuntu 16.04.4
 
 ![ceepMiner](https://i.imgur.com/KsPZaKu.png)
 
+
+NVIDA 
+sudo apt install ocl-icd-opencl-dev
+
 ## Usage
 
 Start your image binding the external ports 8124 and 9001 to all interfaces to your container:
@@ -29,7 +33,9 @@ Place your [`miner.confg`](https://github.com/Creepsky/creepMiner/wiki/Sample-mi
 
 ## Quick setup
 
-Go to [http://127.0.0.1:8124](http://127.0.0.1:8124) and setup your miner.
+Go to [http://127.0.0.1:8124](http://127.0.0.1:8124) and setup your miner. The default username and password is:
+
+**creep / M1n3r**
 
 Please see the creepMiner [wiki](https://github.com/Creepsky/creepMiner/wiki) for futher information on setting up your miner.
 
@@ -38,7 +44,7 @@ Please see the creepMiner [wiki](https://github.com/Creepsky/creepMiner/wiki) fo
 Interface | URL and Port
 ------------ | -------------
 creepMiner | [http://docker_ip:8124](http://127.0.0.1:8124)
-supervisord /webproc | [http://docker_ip:9001](http://127.0.0.1:9001)
+supervisord / webproc | [http://docker_ip:9001](http://127.0.0.1:9001)
 frontail | [http://docker_ip:9002](http://127.0.0.1:9002)
 
 ## Advanced settings
