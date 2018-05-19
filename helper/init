@@ -7,7 +7,7 @@ echo " "
 
 if [[ -v ENABLE_SSH ]]; then
 	if [ ${ENABLE_SSH} = TRUE ]; then
-    echo "=> Setting up SSHd"
+ 	echo -e "\E[1;32m=> Starting SSHd"
 		if [ ! -d /var/run/sshd ] ; then
 			echo "=> Configuring SSH"
 			mkdir /var/run/sshd
@@ -41,7 +41,7 @@ fi
 
 if [[ -v AUTO_START ]]; then
 	if [ ${AUTO_START} = TRUE ]; then
-    echo "\E[1;32m=> Adding creepMiner to Supervisord"
+    echo -e "\E[1;32m=> Adding creepMiner to Supervisord"
     touch ~/supervisord.creepminer
     echo " " >> /etc/supervisor/supervisord.conf
     echo "[program:creepMiner]" >> /etc/supervisor/supervisord.conf

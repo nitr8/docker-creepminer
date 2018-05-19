@@ -22,7 +22,7 @@ docker create \
 -v </path/to/config>:/config
 -v </path/to/plot_dir_01>:/plot/01 \
 -v </path/to/plot_dir_02>:/plot/02 \
-linuxserver/plex
+whumphrey/creepminer
 ```
 
 By default the miner uses a default config `/usr/local/sbin/miner.config`. 
@@ -56,6 +56,13 @@ AUTO_START environment variable to TRUE/FALSE
 ### ssh login to container
 If you wish to enable ssh for the container set
 ENABLE_SSH to TRUE
+
+### frontail
+TBD
+FRONTAIL=TRUE
+
+### Custom scripts
+C_SCRIPT=test.sh 
 
 ### supervisord or webproc deamons
 dependent on your needs TBD
