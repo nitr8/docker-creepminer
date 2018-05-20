@@ -25,11 +25,11 @@ docker create \
 whumphrey/creepminer
 ```
 
-By default the miner uses a default config `/usr/local/sbin/miner.config`. 
+By default the miner uses a default config `/usr/local/sbin/mining.conf`. 
 
-Please use your own [`miner.confg`](https://github.com/Creepsky/creepMiner/wiki/Sample-mining.conf).
+Please use your own [`mining.conf`](https://github.com/Creepsky/creepMiner/wiki/Sample-mining.conf).
 
-Place your [`miner.confg`](https://github.com/Creepsky/creepMiner/wiki/Sample-mining.conf) in `</path/to/config>`.
+Place your [`mining.conf`](https://github.com/Creepsky/creepMiner/wiki/Sample-mining.conf) in `</path/to/config>`.
 
 ## Quick setup
 
