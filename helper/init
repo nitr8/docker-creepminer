@@ -87,7 +87,7 @@ fi
 if [[ -v C_SCRIPT ]]; then
 	echo -e "\E[1;32m=> Custom script varable found"
 	if [ -n "${C_SCRIPT}" ]; then
-		echo "=> Exicuting {C_SCRIPT}"
+		echo "=> Exicuting ${C_SCRIPT}"
 		chmod 755 /config/${C_SCRIPT} && /config/${C_SCRIPT}
 	else
 		echo " "

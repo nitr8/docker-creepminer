@@ -19,7 +19,7 @@ docker create \
 -p 8124:8124 \
 -p 9001:9001 \
 -p 9002:9002 \
--v </path/to/config>:/config
+-v </path/to/local/config/dir>:/config
 -v </path/to/plot_dir_01>:/plot/01 \
 -v </path/to/plot_dir_02>:/plot/02 \
 whumphrey/creepminer
@@ -79,3 +79,5 @@ creepMiner wallet | [https://wallet.creepminer.net](https://wallet.creepminer.ne
 demo miner | [https://demo.creepminer.net](https://demo.creepminer.net)
 
 Please see docker's [Use volumes](https://docs.docker.com/storage/volumes/) for more details.
+
+For a list of supported timezones - see [List of TimeZones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
