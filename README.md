@@ -64,7 +64,7 @@ FRONTAIL=TRUE
 ### Custom scripts
 C_SCRIPT=test.sh 
 
-### supervisord or webproc deamons
+### supervisord or webproc daemons
 dependent on your needs TBD
 SUPERVISOR environment variable to TRUE/FALSE
 WEBPROC

@@ -15,7 +15,7 @@ if [[ -v ENABLE_SSH ]]; then
 			sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
     fi
     if [ ! -f ~/supervisord.ssh ] ; then
-	    echo "=> Adding SSH to Supervisord"
+	    echo "=> Adding SSH to Supervisor"
 	    touch ~/supervisord.ssh
 	    echo " " >> /etc/supervisor/supervisord.conf
 	    echo "[program:sshd]" >> /etc/supervisor/supervisord.conf
@@ -41,7 +41,7 @@ fi
 
 if [[ -v AUTO_START ]]; then
 	if [ ${AUTO_START} = TRUE ]; then
-    echo -e "\E[1;32m=> Adding creepMiner to Supervisord"
+    echo -e "\E[1;32m=> Adding creepMiner to Supervisor"
     touch ~/supervisord.creepminer
     echo " " >> /etc/supervisor/supervisord.conf
     echo "[program:creepMiner]" >> /etc/supervisor/supervisord.conf
@@ -85,9 +85,9 @@ if [[ -v FRONTAIL ]]; then
 fi
 
 if [[ -v C_SCRIPT ]]; then
-	echo -e "\E[1;32m=> Custom script varable found"
+	echo -e "\E[1;32m=> Custom script variable found"
 	if [ -n "${C_SCRIPT}" ]; then
-		echo "=> Exicuting ${C_SCRIPT}"
+		echo "=> Executing ${C_SCRIPT}"
 		chmod 755 /config/${C_SCRIPT} && /config/${C_SCRIPT}
 	else
 		echo " "
