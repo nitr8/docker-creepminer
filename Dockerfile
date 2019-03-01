@@ -28,6 +28,7 @@ RUN cd /tmp/ \
   && cp -r resources/public /usr/local/sbin/ \
   && cp -r resources/frontail.json /etc/ \
   && cp -r src/shabal/opencl/mining.cl /usr/local/sbin/ \
+  && cp -r libShabal/libshabal.so /usr/local/sbin/ \
   && cp -r bin/creepMiner /usr/local/sbin/ \
   && sed -i '2s/creepMiner/creepContainer/' /usr/local/sbin/public/js/general.js \
   && sed -i '4s/false/true/' /usr/local/sbin/public/js/general.js \
