@@ -74,9 +74,6 @@ WEBPROC
 Description | URL
 ------------ | -------------
 creepMiner github | [https://github.com/Creepsky/creepMiner](https://github.com/Creepsky/creepMiner)
-creepMiner pool | [https://pool.creepminer.net](https://pool.creepminer.net)
-creepMiner wallet | [https://wallet.creepminer.net](https://wallet.creepminer.net)
-demo miner | [https://demo.creepminer.net](https://demo.creepminer.net)
 
 Please see docker's [Use volumes](https://docs.docker.com/storage/volumes/) for more details.
 
